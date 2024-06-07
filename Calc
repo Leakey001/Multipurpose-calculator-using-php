@@ -1,0 +1,118 @@
+<?php
+
+function calculate($num1, $num2, $operator) {
+  if (!is_numeric($num1) || !is_numeric($num2)) {
+    return "Invalid Input. Please enter numbers only.";
+  }
+
+  switch ($operator) {
+    case "+":
+      return $num1 + $num2;
+    case "-":
+      return $num1 - $num2;
+    case "*":
+      return $num1 * $num2;
+    case "/":
+      if ($num2 == 0) {
+        return "Error: Cannot divide by zero.";
+      } else {
+        return $num1 / $num2;
+      }
+    default:
+      return "Invalid Operator";
+  }
+}
+
+function calculatePercentage($num, $percent) {
+  if (!is_numeric($num) || !is_numeric($percent)) {
+    return "Invalid Input. Please enter numbers only.";
+  }
+  return $num * ($percent / 100);
+}
+
+function calculateSquareRoot($num) {
+  if (!is_numeric($num)) {
+    return "Invalid Input. Please enter a number.";
+  }
+  if ($num < 0) {
+    return "Error: Square root of negative numbers is not supported.";
+  } else {
+    return sqrt($num);
+  }
+}
+
+function calculateLogarithm($num) {
+  if (!is_numeric($num)) {
+    return "Invalid Input. Please enter a number.";
+  }
+  if ($num <= 0) {
+    return "Error: Logarithm of non-positive numbers is not supported.";
+  } else {
+    return log10($num);
+  }
+}
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $number1 = $_POST["number1"];
+  $number2 = $_POST["number2"];
+  $operator = $_POST["operator"];
+
+
+  $result = "";
+  switch ($operator) {
+    case "add":
+    case "sub":
+    case "mul":
+    case "div":
+      $result = calculate($number1, $number2, $operator);
+      break;
+    case "percent":
+      $result = calculatePercentage($number1, $number2);
+      break;
+    case "sqrt":
+      $result = calculateSquareRoot($number1);
+      break;
+    case "log":
+      $result = calculateLogarithm($number1);
+      break;
+  }
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multipurpose Calculator</title>
+</head>
+<body>
+  <h1>Multipurpose Calculator</h1>
+  <?php
+
+  if (isset($result)) {
+    echo "<h2>Result:</h2>";
+    echo "<p>$result</p>";
+  }
+  ?>
+  <form action="" method="post">
+    <label for="number1">Number 1:</label>
+    <input type="text" name="number1" id="number1" required>
+    <br>
+    <label for="number2">Number 2 (for operations requiring two numbers):</label>
+    <input type="text" name="number2" id="number2"> (Optional for some operations)
+    <br>
+    <label for="operator">Operation:</label>
+    <br>
+    <input type="radio" name="operator" id="add" value="add" required>
+    <label for="add">Addition</label>
+    <br>
+    <input type="radio" name="operator" id="sub" value="sub" required>
+    <label for="sub">Subtraction</label>
+    <br>
+    <input type="radio" name="operator" id="mul" value="mul" required>
+    <label for="mul">Multiplication</label>
+    <br>
+    <input type="radio" name="operator" id="div"
